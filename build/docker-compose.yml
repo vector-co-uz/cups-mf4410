@@ -1,0 +1,23 @@
+version: "3.8"
+
+services:
+  cups-canon-mf4410:
+    build: .
+    container_name: cups-canon-mf4410
+    restart: unless-stopped
+    ports:
+      - "631:631"
+    devices:
+      # Раскомментируйте и подставьте реальный путь к принтеру,
+      # см. вывод `lsusb` / `ls /dev/usb/lp*` на хосте
+      # - "/dev/usb/lp0:/dev/usb/lp0"
+      {}
+    privileged: false
+    cap_add:
+      - SYS_ADMIN
+    volumes:
+      - cups_config:/etc/cups
+      - /dev/bus/usb:/dev/bus/usb   # проброс всей USB-шины (проще, чем один девайс)
+
+volumes:
+  cups_config:

@@ -1,0 +1,27 @@
+# ──────────────────────────────────────────────────────────────
+#  CUPS + Canon i-SENSYS MF4410
+# ──────────────────────────────────────────────────────────────
+services:
+  cups-canon-mf4410:
+    container_name: cups-canon-mf4410
+    restart: unless-stopped
+
+    # Вариант А (по умолчанию) — готовый образ, сборка не нужна:
+    image: ghcr.io/vector-co-uz/cups-mf4410:latest
+
+    # Вариант Б — собрать локально из исходников (нужен драйвер в ./drivers):
+    # закомментируйте "image:" выше и раскомментируйте строку ниже
+    # build: .
+
+    ports:
+      - "631:631"
+
+    volumes:
+      - cups_config:/etc/cups
+      - /dev/bus/usb:/dev/bus/usb   # проброс всей USB-шины
+
+    cap_add:
+      - SYS_ADMIN
+
+volumes:
+  cups_config:
