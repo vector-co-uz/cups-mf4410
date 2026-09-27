@@ -92,6 +92,11 @@ docker compose up -d
 
 ---
 
+```
+- Логин: `printadmin` / пароль: `printadmin` (обязательно смените в
+  Dockerfile перед реальным использованием — там `chpasswd` в конце сборки)
+```
+---
 ## 🔌 Проброс USB-принтера
 
 ### Unraid
