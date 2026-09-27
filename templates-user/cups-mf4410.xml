@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<Container version="2">
+  <Name>cups-mf4410</Name>
+  <Repository>ghcr.io/vector-co-uz/cups-mf4410:latest</Repository>
+  <Registry>https://ghcr.io/vector-co-uz/cups-mf4410</Registry>
+  <Branch>latest</Branch>
+  <Network>bridge</Network>
+  <MyIP/>
+  <Shell>sh</Shell>
+  <Privileged>false</Privileged>
+  <Support>https://github.com/vector-co-uz/cups-mf4410</Support>
+  <Project>https://github.com/vector-co-uz/cups-mf4410</Project>
+  <Overview>CUPS с установленным драйвером Canon UFR II / UFRII LT для печати со старого USB-принтера Canon i-SENSYS MF4410.</Overview>
+  <Category>Tools: Network:Other</Category>
+  <WebUI>http://[IP]:[PORT:631]</WebUI>
+  <TemplateURL/>
+  <Icon>https://raw.githubusercontent.com/vector-co-uz/cups-mf4410/main/icon.png</Icon>
+  <ExtraParams>--cap-add SYS_ADMIN</ExtraParams>
+  <PostArgs/>
+  <CPUset/>
+  <DateInstalled/>
+  <DonateText/>
+  <DonateLink/>
+  <Requires/>
+  <Config Name="WebUI Port" Target="631" Default="631" Mode="tcp" Description="Веб-интерфейс CUPS" Type="Port" Display="always" Required="true" Mask="false">631</Config>
+  <Config Name="Config Path" Target="/etc/cups" Default="/mnt/user/appdata/cups-mf4410/config" Mode="rw" Description="Хранилище настроек CUPS (принтеры, очереди)" Type="Path" Display="always" Required="true" Mask="false">/mnt/user/appdata/cups-mf4410/config</Config>
+  <Config Name="USB Bus" Target="/dev/bus/usb" Default="/dev/bus/usb" Mode="rw" Description="Проброс USB-шины хоста для доступа к принтеру" Type="Path" Display="always" Required="true" Mask="false">/dev/bus/usb</Config>
+</Container>
