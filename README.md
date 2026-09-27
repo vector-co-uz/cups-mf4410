@@ -5,6 +5,7 @@
 ![GHCR](https://img.shields.io/badge/ghcr.io-vector--co--uz%2Fcups--mf4410-blue?logo=github)
 ![CUPS](https://img.shields.io/badge/CUPS-2.x-lightgrey?logo=cups)
 ![Base](https://img.shields.io/badge/base-debian%3Abookworm--slim-red?logo=debian)
+![Built with Claude](https://img.shields.io/badge/built%20with-Claude-D97757?logo=anthropic&logoColor=white)
 
 ---
 
@@ -34,7 +35,6 @@ docker pull ghcr.io/vector-co-uz/cups-mf4410:latest
 
 ## 🐳 docker run
 
-Файл [`docker-run.sh`](./docker-run.sh):
 
 ```bash
 #!/usr/bin/env bash
@@ -47,12 +47,6 @@ docker run -d \
   --cap-add SYS_ADMIN \
   ghcr.io/vector-co-uz/cups-mf4410:latest
 ```
-
-```bash
-chmod +x docker-run.sh
-./docker-run.sh
-```
-
 ---
 
 ## 📦 docker compose
@@ -83,7 +77,6 @@ docker compose up -d
    cups-mf4410/
    ├── Dockerfile
    ├── docker-compose.yml
-   ├── docker-run.sh
    ├── README.md
    └── drivers/
        └── o151en_linux_UFRII_v310.zip   ← сюда
@@ -97,54 +90,13 @@ docker compose up -d
 
    Сборка сама распакует архив, найдёт `install.sh` и установит драйвер. В логе будет видна вся структура архива и полный вывод установщика — если модель не определится, ошибка будет видна сразу.
 
-4. (Опционально) Запушить в свой реестр:
-
-   ```bash
-   docker tag cups-canon-mf4410 ghcr.io/ВАШ_ЛОГИН/cups-mf4410:latest
-   docker push ghcr.io/ВАШ_ЛОГИН/cups-mf4410:latest
-   ```
-
 ---
 
 ## 🔌 Проброс USB-принтера
 
 ### Unraid
 
-Docker на Unraid обычно видит `/dev/bus/usb` напрямую — достаточно смонтировать его как volume (уже включено в `docker-compose.yml` / `docker-run.sh` выше).
-
-### Proxmox LXC (Alpine и любой другой)
-
-Двухшаговый проброс: **хост Proxmox → LXC**, затем **LXC → Docker** (второй шаг — тот же volume, что и выше).
-
-На хосте Proxmox, в `/etc/pve/lxc/<ID>.conf`:
-
-```ini
-features: nesting=1,keyctl=1
-lxc.cgroup2.devices.allow: c 189:* rwm
-lxc.mount.entry: /dev/bus/usb dev/bus/usb none bind,optional,create=dir
-```
-
-```bash
-pct stop <ID>
-pct start <ID>
-```
-
-Внутри LXC (Alpine):
-
-```bash
-apk add docker docker-cli-compose usbutils
-rc-update add docker default
-service docker start
-lsusb   # принтер должен быть виден
-```
-
-Если `docker info` ругается на `overlay2` в unprivileged-контейнере — переключите драйвер хранилища:
-
-```bash
-mkdir -p /etc/docker
-echo '{"storage-driver": "vfs"}' > /etc/docker/daemon.json
-service docker restart
-```
+Docker на Unraid обычно видит `/dev/bus/usb` напрямую — достаточно смонтировать его как volume или проброс как "/dev/bus/usb/003/010:/dev/bus/usb/003/010".
 
 ---
 
